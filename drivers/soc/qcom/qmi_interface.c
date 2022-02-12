@@ -477,6 +477,7 @@ static void qmi_handle_message(struct qmi_handle *qmi,
 	struct qmi_txn tmp_txn;
 	struct qmi_txn *txn = NULL;
 	int ret;
+	// size_t i;
 
 	if (len < sizeof(*hdr)) {
 		pr_err("ignoring short QMI packet\n");
@@ -484,6 +485,9 @@ static void qmi_handle_message(struct qmi_handle *qmi,
 	}
 
 	hdr = buf;
+
+	// for (i = 0; i < len; i++)
+	// 	pr_info("RX 0x%02x\n", *(u8*)(buf + i));
 
 	/* If this is a response, find the matching transaction handle */
 	if (hdr->type == QMI_RESPONSE) {
@@ -746,6 +750,7 @@ static ssize_t qmi_send_message(struct qmi_handle *qmi,
 	struct kvec iv;
 	void *msg;
 	int ret;
+	// size_t i;
 
 	msg = qmi_encode_message(type,
 				 msg_id, &len,
@@ -753,6 +758,9 @@ static ssize_t qmi_send_message(struct qmi_handle *qmi,
 				 c_struct);
 	if (IS_ERR(msg))
 		return PTR_ERR(msg);
+
+	// for (i = 0; i < len; i++)
+	// 	pr_info("TX 0x%02x\n", *(u8*)(msg + i));
 
 	iv.iov_base = msg;
 	iv.iov_len = len;

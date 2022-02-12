@@ -618,6 +618,8 @@ static int qmi_decode(const struct qmi_elem_info *ei_array, void *out_c_struct,
 			temp_ei = find_ei(ei_array, tlv_type);
 			if (!temp_ei && tlv_type < OPTIONAL_TLV_TYPE_START) {
 				pr_err("%s: Inval element info\n", __func__);
+				pr_err("decoded_bytes 0x%02x, tlv_type 0x%02x\n",
+					decoded_bytes, tlv_type);
 				return -EINVAL;
 			} else if (!temp_ei) {
 				UPDATE_DECODE_VARIABLES(buf_src,
