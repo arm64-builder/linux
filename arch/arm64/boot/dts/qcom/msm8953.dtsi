@@ -1374,6 +1374,11 @@
 				status = "disabled";
 			};
 		};
+
+		saw4: syscon@b1d2000 {
+			compatible = "syscon";
+			reg = <0xb1d2000 0x1000>;
+		};
 	};
 
 	thermal-zones {
