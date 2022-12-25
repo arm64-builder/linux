@@ -4,6 +4,150 @@
 #include "msm8953.dtsi"
 
 / {
+	/delete-node/cpu0-opp-table;
+	/delete-node/cci-opp-table;
+
+	cpu0_opp: cpu0-opp-table {
+		compatible = "operating-points-v2-qcom-cpu",
+			     "operating-points-v2-kryo-cpu";
+		nvmem-cells = <&cpu_speed_bin>;
+		opp-shared;
+
+		opp-614400 {
+			opp-hz = /bits/ 64 <614400000>;
+			opp-peak-KBps = <2457600>;
+			opp-supported-hw = <0x45>;
+			opp-suspend;
+			required-opps = <&cpu_pstate_6144>;
+		};
+		opp-883200 {
+			opp-hz = /bits/ 64 <883200000>;
+			opp-peak-KBps = <3225600>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_8832>;
+		};
+		opp-1036800 {
+			opp-hz = /bits/ 64 <1036800000>;
+			opp-peak-KBps = <3993600>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_10368>;
+		};
+		opp-1363200 {
+			opp-hz = /bits/ 64 <1363200000>;
+			opp-peak-KBps = <5529600>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_13632>;
+		};
+		opp-1536000 {
+			opp-hz = /bits/ 64 <1536000000>;
+			opp-peak-KBps = <6144000>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_15360>;
+		};
+		opp-1670400 {
+			opp-hz = /bits/ 64 <1670400000>;
+			opp-peak-KBps = <6297600>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_16704>;
+		};
+		opp-1804800 {
+			opp-hz = /bits/ 64 <1804800000>;
+			opp-peak-KBps = <6297600>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_18048>;
+		};
+	};
+
+	cpu4_opp: cpu4-opp-table {
+		compatible = "operating-points-v2-qcom-cpu",
+			     "operating-points-v2-kryo-cpu";
+		opp-shared;
+
+		opp-633600 {
+			opp-hz = /bits/ 64 <633600000>;
+			opp-peak-KBps = <2457600>;
+			opp-supported-hw = <0x45>;
+			opp-suspend;
+			required-opps = <&cpu_pstate_6336>;
+		};
+		opp-902400 {
+			opp-hz = /bits/ 64 <902400000>;
+			opp-peak-KBps = <3225600>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_9024>;
+		};
+		opp-1094400 {
+			opp-hz = /bits/ 64 <1094400000>;
+			opp-peak-KBps = <3993600>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_10944>;
+		};
+		opp-1401600 {
+			opp-hz = /bits/ 64 <1401600000>;
+			opp-peak-KBps = <5529600>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_14016>;
+		};
+		opp-1555200 {
+			opp-hz = /bits/ 64 <1555200000>;
+			opp-peak-KBps = <6144000>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_15552>;
+		};
+		opp-1804800 {
+			opp-hz = /bits/ 64 <1804800000>;
+			opp-peak-KBps = <6297600>;
+			opp-supported-hw = <0x45>;
+			required-opps = <&cpu_pstate_18048>;
+		};
+		opp-1996200 {
+			opp-hz = /bits/ 64 <1996200000>;
+			opp-peak-KBps = <6297600>;
+			opp-supported-hw = <0x04>;
+			required-opps = <&cpu_pstate_19962>;
+		};
+		opp-2016000 {
+			opp-hz = /bits/ 64 <2016000000>;
+			opp-peak-KBps = <6297600>;
+			opp-supported-hw = <0x04>;
+			required-opps = <&cpu_pstate_20160>;
+		};
+	};
+
+	cci_opp: cci-opp-table {
+		compatible = "operating-points-v2-qcom-level";
+
+		opp-307200 {
+			opp-hz = /bits/ 64 <307200000>;
+			required-opps = <&cpu_pstate_6144>;
+		};
+
+		opp-403200 {
+			opp-hz = /bits/ 64 <403200000>;
+			required-opps = <&cpu_pstate_8832>;
+		};
+
+		opp-499200 {
+			opp-hz = /bits/ 64 <499200000>;
+			required-opps = <&cpu_pstate_10368>;
+		};
+
+		opp-691200 {
+			opp-hz = /bits/ 64 <691200000>;
+			required-opps = <&cpu_pstate_13632>;
+		};
+
+		opp-768000 {
+			opp-hz = /bits/ 64 <768000000>;
+			required-opps = <&cpu_pstate_15360>;
+		};
+
+		opp-787200 {
+			opp-hz = /bits/ 64 <787200000>;
+			required-opps = <&cpu_pstate_16704>;
+		};
+	};
+
 	thermal-zones {
 		/delete-node/cpu1-thermal;
 		/delete-node/cpu2-thermal;
@@ -63,19 +207,23 @@
 &CPU4 {
 	compatible = "qcom,kryo250";
 	capacity-dmips-mhz = <1980>;
+	operating-points-v2 = <&cpu4_opp>;
 };
 
 &CPU5 {
 	compatible = "qcom,kryo250";
 	capacity-dmips-mhz = <1980>;
+	operating-points-v2 = <&cpu4_opp>;
 };
 
 &CPU6 {
 	compatible = "qcom,kryo250";
 	capacity-dmips-mhz = <1980>;
+	operating-points-v2 = <&cpu4_opp>;
 };
 
 &CPU7 {
 	compatible = "qcom,kryo250";
 	capacity-dmips-mhz = <1980>;
+	operating-points-v2 = <&cpu4_opp>;
 };
