@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 /* Copyright (c) 2022, The Linux Foundation. All rights reserved. */
 
+#include <dt-bindings/clock/qcom,apcc-msm8953.h>
 #include <dt-bindings/clock/qcom,gcc-msm8953.h>
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
@@ -40,6 +41,8 @@
 			reg = <0x0>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
+			clocks = <&apcc APCC_CPU0_CLK>;
+			clock-names = "cpu";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 
@@ -57,6 +60,8 @@
 			reg = <0x1>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
+			clocks = <&apcc APCC_CPU0_CLK>;
+			clock-names = "cpu";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 
@@ -74,6 +79,8 @@
 			reg = <0x2>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
+			clocks = <&apcc APCC_CPU0_CLK>;
+			clock-names = "cpu";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 
@@ -91,6 +98,8 @@
 			reg = <0x3>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
+			clocks = <&apcc APCC_CPU0_CLK>;
+			clock-names = "cpu";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 
@@ -108,6 +117,8 @@
 			reg = <0x100>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
+			clocks = <&apcc APCC_CPU4_CLK>;
+			clock-names = "cpu";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 
@@ -125,6 +136,8 @@
 			reg = <0x101>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
+			clocks = <&apcc APCC_CPU4_CLK>;
+			clock-names = "cpu";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 
@@ -142,6 +155,8 @@
 			reg = <0x102>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
+			clocks = <&apcc APCC_CPU4_CLK>;
+			clock-names = "cpu";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 
@@ -159,6 +174,8 @@
 			reg = <0x103>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
+			clocks = <&apcc APCC_CPU4_CLK>;
+			clock-names = "cpu";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 
@@ -1313,8 +1330,33 @@
 
 		apcs: mailbox@b011000 {
 			compatible = "qcom,msm8953-apcs-kpss-global", "syscon";
-			reg = <0xb011000 0x1000>;
+			reg = <0xb011000 0x50>;
 			#mbox-cells = <1>;
+		};
+
+		apcc: clock-controller@b011050 {
+			compatible = "qcom,apcc-msm8953";
+			reg = <0xb011050 0xc>,
+			      <0xb016000 0x38>,
+			      <0xb111050 0xc>,
+			      <0xb116000 0x38>,
+			      <0xb1d0000 0x30>,
+			      <0xb1d1050 0xc>;
+			reg-names = "cpu4-mux-clk",
+				    "cpu4-pll-clk",
+				    "cpu0-mux-clk",
+				    "cpu0-pll-clk",
+				    "cci-pll-clk",
+				    "cci-mux-clk";
+
+			clocks = <&xo_board>,
+				 <&gcc GPLL0_EARLY>,
+				 <&gcc GPLL2_EARLY>;
+			clock-names = "xo",
+				      "muxsrc4",
+				      "muxsrc2";
+
+			#clock-cells = <1>;
 		};
 
 		timer@b120000 {
