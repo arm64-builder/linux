@@ -43,6 +43,8 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			power-domains = <&cpr4pd 0>;
+			power-domain-names = "cpr";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 
@@ -62,6 +64,8 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			power-domains = <&cpr4pd 0>;
+			power-domain-names = "cpr";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 
@@ -81,6 +85,8 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			power-domains = <&cpr4pd 0>;
+			power-domain-names = "cpr";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 
@@ -100,6 +106,8 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			power-domains = <&cpr4pd 0>;
+			power-domain-names = "cpr";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 
@@ -119,6 +127,8 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			power-domains = <&cpr4pd 1>;
+			power-domain-names = "cpr";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 
@@ -138,6 +148,8 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			power-domains = <&cpr4pd 1>;
+			power-domain-names = "cpr";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 
@@ -157,6 +169,8 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			power-domains = <&cpr4pd 1>;
+			power-domain-names = "cpr";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 
@@ -176,6 +190,8 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			power-domains = <&cpr4pd 1>;
+			power-domain-names = "cpr";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 
@@ -442,6 +458,23 @@
 			resets = <&gcc GCC_QUSB2_PHY_BCR>;
 
 			status = "disabled";
+		};
+
+		qfprom: efuse@a4000 {
+			compatible = "qcom,qfprom";
+			reg = <0xa4000 0x1000>;
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			cpu_speed_bin: cpu_speed_bin@124 {
+				reg = <0x125 1>;
+				bits = <0 3>;
+			};
+
+			cpr_efuse_revision: fusing_rev@23c {
+				reg = <0x23e 1>;
+				bits = <5 3>;
+			};
 		};
 
 		rng@e3000 {
@@ -1357,6 +1390,89 @@
 				      "muxsrc2";
 
 			#clock-cells = <1>;
+		};
+
+		cpr4pd: power-controller@b018000 {
+			compatible = "qcom,msm8953-cpr4pd";
+
+			nvmem = <&qfprom>;
+			nvmem-cells = <&cpr_efuse_revision>,
+				      <&cpu_speed_bin>;
+			nvmem-cell-names = "fusing_rev",
+					   "speed_bin";
+
+			reg = <0xb018000 0x4000>,
+			      <0xb111200 0x100>;
+			reg-names = "cpr", "apm";
+
+			operating-points-v2 = <&cpr4pd_opp>;
+
+			#power-domain-cells = <1>;
+
+			cpr4pd_opp: cpr-opp-table {
+				compatible = "operating-points-v2-qcom-level";
+
+				cpu_pstate_6144: opp-6144 {
+					opp-level = <6144>;
+				};
+				cpu_pstate_6336: opp-6336 {
+					opp-level = <6336>;
+				};
+				cpu_pstate_6528: opp-6528 {
+					opp-level = <6528>;
+				};
+				cpu_pstate_8832: opp-8832 {
+					opp-level = <8832>;
+				};
+				cpu_pstate_9024: opp-9024 {
+					opp-level = <9024>;
+				};
+				cpu_pstate_10368: opp-10368 {
+					opp-level = <10368>;
+				};
+				cpu_pstate_10944: opp-10944 {
+					opp-level = <10944>;
+				};
+				cpu_pstate_12480: opp-12480 {
+					opp-level = <12480>;
+				};
+				cpu_pstate_13632: opp-13632 {
+					opp-level = <13632>;
+				};
+				cpu_pstate_14016: opp-14016 {
+					opp-level = <14016>;
+				};
+				cpu_pstate_15360: opp-15360 {
+					opp-level = <15360>;
+				};
+				cpu_pstate_15552: opp-15552 {
+					opp-level = <15552>;
+				};
+				cpu_pstate_16704: opp-16704 {
+					opp-level = <16704>;
+				};
+				cpu_pstate_16896: opp-16896 {
+					opp-level = <16896>;
+				};
+				cpu_pstate_18048: opp-18048 {
+					opp-level = <18048>;
+				};
+				cpu_pstate_19584: opp-19584 {
+					opp-level = <19584>;
+				};
+				cpu_pstate_19962: opp-19962 {
+					opp-level = <19962>;
+				};
+				cpu_pstate_20160: opp-20160 {
+					opp-level = <20160>;
+				};
+				cpu_pstate_21504: opp-21504 {
+					opp-level = <21504>;
+				};
+				cpu_pstate_22080: opp-22080 {
+					opp-level = <22080>;
+				};
+			};
 		};
 
 		timer@b120000 {
