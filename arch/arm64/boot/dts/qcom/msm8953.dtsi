@@ -3,6 +3,7 @@
 
 #include <dt-bindings/clock/qcom,apcc-msm8953.h>
 #include <dt-bindings/clock/qcom,gcc-msm8953.h>
+#include <dt-bindings/interconnect/qcom,msm8953.h>
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/power/qcom-rpmpd.h>
@@ -43,6 +44,7 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			interconnects = <&cci MAS_CCI &cci SLV_CCI_BIMC>;
 			power-domains = <&cpr4pd 0>;
 			power-domain-names = "cpr";
 			next-level-cache = <&L2_0>;
@@ -64,6 +66,7 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			interconnects = <&cci MAS_CCI &cci SLV_CCI_BIMC>;
 			power-domains = <&cpr4pd 0>;
 			power-domain-names = "cpr";
 			next-level-cache = <&L2_0>;
@@ -85,6 +88,7 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			interconnects = <&cci MAS_CCI &cci SLV_CCI_BIMC>;
 			power-domains = <&cpr4pd 0>;
 			power-domain-names = "cpr";
 			next-level-cache = <&L2_0>;
@@ -106,6 +110,7 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			interconnects = <&cci MAS_CCI &cci SLV_CCI_BIMC>;
 			power-domains = <&cpr4pd 0>;
 			power-domain-names = "cpr";
 			next-level-cache = <&L2_0>;
@@ -127,6 +132,7 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			interconnects = <&cci MAS_CCI &cci SLV_CCI_BIMC>;
 			power-domains = <&cpr4pd 1>;
 			power-domain-names = "cpr";
 			next-level-cache = <&L2_1>;
@@ -148,6 +154,7 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			interconnects = <&cci MAS_CCI &cci SLV_CCI_BIMC>;
 			power-domains = <&cpr4pd 1>;
 			power-domain-names = "cpr";
 			next-level-cache = <&L2_1>;
@@ -169,6 +176,7 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			interconnects = <&cci MAS_CCI &cci SLV_CCI_BIMC>;
 			power-domains = <&cpr4pd 1>;
 			power-domain-names = "cpr";
 			next-level-cache = <&L2_1>;
@@ -190,6 +198,7 @@
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			interconnects = <&cci MAS_CCI &cci SLV_CCI_BIMC>;
 			power-domains = <&cpr4pd 1>;
 			power-domain-names = "cpr";
 			next-level-cache = <&L2_1>;
@@ -244,6 +253,71 @@
 			compatible = "cache";
 			cache-level = <2>;
 		};
+	};
+
+	cci_opp: cci-opp-table {
+		compatible = "operating-points-v2-qcom-level";
+
+		opp-652800 {
+			opp-hz = /bits/ 64 <(652800000*2/5)>;
+			required-opps = <&cpu_pstate_6528>;
+		};
+
+		opp-1036800 {
+			opp-hz = /bits/ 64 <(1036800000*2/5)>;
+			required-opps = <&cpu_pstate_10368>;
+		};
+
+		opp-1248000 {
+			opp-hz = /bits/ 64 <(1248000000*2/5)>;
+			required-opps = <&cpu_pstate_12480>;
+		};
+
+		opp-1401600 {
+			opp-hz = /bits/ 64 <(1401600000*2/5)>;
+			required-opps = <&cpu_pstate_14016>;
+		};
+
+		opp-1689600 {
+			opp-hz = /bits/ 64 <(1689600000*2/5)>;
+			required-opps = <&cpu_pstate_16896>;
+		};
+
+		opp-1804800 {
+			opp-hz = /bits/ 64 <(1804800000*2/5)>;
+			required-opps = <&cpu_pstate_18048>;
+		};
+
+		opp-1958400 {
+			opp-hz = /bits/ 64 <(1958400000*2/5)>;
+			required-opps = <&cpu_pstate_19584>;
+		};
+
+		opp-2016000 {
+			opp-hz = /bits/ 64 <(2016000000*2/5)>;
+			required-opps = <&cpu_pstate_20160>;
+		};
+
+		opp-2150400 {
+			opp-hz = /bits/ 64 <(2150400000*2/5)>;
+			required-opps = <&cpu_pstate_21504>;
+		};
+
+		opp-2208000 {
+			opp-hz = /bits/ 64 <(2208000000*2/5)>;
+			required-opps = <&cpu_pstate_22080>;
+		};
+	};
+
+	cci: interconnect {
+		compatible = "qcom,msm8953-ccic";
+		clocks = <&apcc APCC_CCI_CLK>,
+			 <&apcc APCC_CCI_PLL>;
+		clock-names = "cci", "cci-pll";
+
+		operating-points-v2 = <&cci_opp>;
+		required-opp = <&cpu_pstate_10368>;
+		power-domains = <&cpr4pd 0>;
 	};
 
 	firmware {
