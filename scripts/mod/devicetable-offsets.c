@@ -266,5 +266,9 @@ int main(void)
 	DEVID_FIELD(cdx_device_id, vendor);
 	DEVID_FIELD(cdx_device_id, device);
 
+	DEVID(qrtr_device_id);
+	DEVID_FIELD(qrtr_device_id, service);
+	DEVID_FIELD(qrtr_device_id, instance);
+
 	return 0;
 }

@@ -1463,6 +1463,17 @@ static int do_cdx_entry(const char *filename, void *symval,
 	return 1;
 }
 
+/* Looks like: qrtr:N:N */
+static int do_qrtr_entry(const char *filename, void *symval,
+			char *alias)
+{
+	DEF_FIELD(symval, qrtr_device_id, service);
+	DEF_FIELD(symval, qrtr_device_id, instance);
+
+	sprintf(alias, "qrtr:%x:%x", service, instance);
+	return 1;
+}
+
 /* Does namelen bytes of name exactly match the symbol? */
 static bool sym_is(const char *name, unsigned namelen, const char *symbol)
 {
@@ -1543,6 +1554,7 @@ static const struct devtable devtable[] = {
 	{"dfl", SIZE_dfl_device_id, do_dfl_entry},
 	{"ishtp", SIZE_ishtp_device_id, do_ishtp_entry},
 	{"cdx", SIZE_cdx_device_id, do_cdx_entry},
+	{"qrtr", SIZE_qrtr_device_id, do_qrtr_entry},
 };
 
 /* Create MODULE_ALIAS() statements.
