@@ -1,0 +1,9 @@
+ops:ipa_dma_trans.c:	dest_tre = ipa_dma->ops->ring_virt(tre_ring, tre_ring->index);
+ops:ipa_dma_trans.c:	dest_tre = ipa_dma->ops->ring_virt(tre_ring, tre_ring->index);
+bam.c:	return ring->virt + (index % ring->count) * GSI_RING_ELEMENT_SIZE;
+ipa_dma_trans.c:	avail = tre_ring->count - tre_ring->index % tre_ring->count;
+ipa_dma_trans.c:	dest_tre = ipa_dma->ops->ring_virt(tre_ring, tre_ring->index);
+ipa_dma_trans.c:	ipa_dma_trans_map(trans, tre_ring->index);
+ipa_dma_trans.c:	tre_ring->index += trans->used_count;
+ipa_dma_trans.c:	dest_tre = ipa_dma->ops->ring_virt(tre_ring, tre_ring->index);
+ipa_dma_trans.c:	tre_ring->index++;

@@ -1,0 +1,72 @@
+ipa_endpoint.c:	ipa_dma->ops->channel_reset(ipa_dma, endpoint->channel_id, false);
+ipa_endpoint.c:	ret = ipa_dma->ops->channel_start(ipa_dma, endpoint->channel_id);
+ipa_endpoint.c:	ret = ipa_dma->ops->channel_stop(ipa_dma, endpoint->channel_id);
+ipa_endpoint.c:	ipa_dma->ops->channel_reset(ipa_dma, endpoint->channel_id, true);
+ipa_endpoint.c:	(void)ipa_dma->ops->channel_stop(ipa_dma, endpoint->channel_id);
+ipa_endpoint.c:		ipa_dma->ops->channel_reset(&ipa->ipa_dma, channel_id, true);
+ipa_endpoint.c:	ret = ipa_dma->ops->channel_stop(ipa_dma, endpoint->channel_id);
+ipa_endpoint.c:	ret = ipa_dma->ops->channel_suspend(ipa_dma, endpoint->channel_id);
+ipa_endpoint.c:	ret = ipa_dma->ops->channel_resume(ipa_dma, endpoint->channel_id);
+ipa_endpoint.c:	endpoint->skb_frag_max = ipa_dma->channel[channel_id].trans_tre_max - 1;
+ipa_cmd.c:	struct device *dev = channel->ipa_dma->dev;
+ipa_cmd.c:	struct device *dev = channel->ipa_dma->dev;
+ipa_dma_private.h:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+ipa_power.c:		ipa_dma->ops->suspend(&ipa->ipa_dma);
+ipa_power.c:		ipa_dma->ops->resume(&ipa->ipa_dma);
+bam.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+bam.c:	channel->dma_chan = dma_request_chan(ipa_dma->dev, data->channel_name);
+bam.c:		dev_err(ipa_dma->dev, "failed to request BAM channel %s: %d\n",
+bam.c:		bam_channel_exit_one(&ipa_dma->channel[i]);
+bam.c:		bam_channel_exit_one(&ipa_dma->channel[channel_id]);
+bam.c:	mutex_destroy(&ipa_dma->mutex);
+bam.c:	return channel - &channel->ipa_dma->channel[0];
+bam.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+bam.c:		netif_napi_add_tx(&ipa_dma->dummy_dev, &channel->napi,
+bam.c:		netif_napi_add(&ipa_dma->dummy_dev, &channel->napi,
+bam.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+bam.c:	mutex_lock(&ipa_dma->mutex);
+bam.c:		struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id++];
+bam.c:		dev_err(ipa_dma->dev, "channel %u not supported by hardware\n",
+bam.c:	mutex_unlock(&ipa_dma->mutex);
+bam.c:	mutex_unlock(&ipa_dma->mutex);
+bam.c:	mutex_lock(&ipa_dma->mutex);
+bam.c:	mutex_unlock(&ipa_dma->mutex);
+bam.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+bam.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+bam.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+bam.c:	struct ipa_dma_channel *channel = &trans->ipa_dma->channel[trans->channel_id];
+bam.c:	ipa_dma->dev = dev;
+bam.c:	ipa_dma->version = version;
+bam.c:	init_dummy_netdev(&ipa_dma->dummy_dev);
+bam.c:	mutex_init(&ipa_dma->mutex);
+ipa_dma_trans.c:	struct ipa_dma_channel *channel = &trans->ipa_dma->channel[trans->channel_id];
+ipa_dma_trans.c:		ipa_dma->ops->channel_update(channel);
+ipa_dma_trans.c:	struct ipa_dma_channel *channel = &trans->ipa_dma->channel[trans->channel_id];
+ipa_dma_trans.c:	struct ipa_dma_channel *channel = &trans->ipa_dma->channel[trans->channel_id];
+ipa_dma_trans.c:	struct ipa_dma_channel *channel = &trans->ipa_dma->channel[trans->channel_id];
+ipa_dma_trans.c:	struct ipa_dma_channel *channel = &trans->ipa_dma->channel[trans->channel_id];
+ipa_dma_trans.c:	trans_info = &ipa_dma->channel[channel_id].trans_info;
+ipa_dma_trans.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+ipa_dma_trans.c:	trans_info = &trans->ipa_dma->channel[trans->channel_id].trans_info;
+ipa_dma_trans.c:	ret = dma_map_sg(trans->ipa_dma->dev, sg, 1, trans->direction);
+ipa_dma_trans.c:	ret = dma_map_sg(trans->ipa_dma->dev, sg, used_count, trans->direction);
+ipa_dma_trans.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[trans->channel_id];
+ipa_dma_trans.c:	dest_tre = ipa_dma->ops->ring_virt(tre_ring, tre_ring->index);
+ipa_dma_trans.c:			dest_tre = ipa_dma->ops->ring_virt(tre_ring, 0);
+ipa_dma_trans.c:		ipa_dma->ops->trans_tx_committed(trans);
+ipa_dma_trans.c:			ipa_dma->ops->trans_tx_queued(trans);
+ipa_dma_trans.c:		ipa_dma->ops->channel_doorbell(channel);
+ipa_dma_trans.c:		dma_unmap_sg(trans->ipa_dma->dev, trans->sgl, trans->used_count,
+ipa_dma_trans.c:	/* channel->ipa_dma->mutex is held by caller */
+ipa_dma_trans.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+ipa_dma_trans.c:	dest_tre = ipa_dma->ops->ring_virt(tre_ring, tre_ring->index);
+ipa_dma_trans.c:	ipa_dma->ops->channel_doorbell(channel);
+ipa_dma_trans.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+ipa_dma_trans.c:	struct ipa_dma_channel *channel = &ipa_dma->channel[channel_id];
+ipa_dma_trans.c:	dev_err(ipa_dma->dev, "error %d initializing channel %u transactions\n",
+ipa_main.c:	ret = ipa_dma->ops->setup(ipa_dma);
+ipa_main.c:	ipa_dma->ops->teardown(ipa_dma);
+ipa_main.c:	ipa_dma->ops->teardown(ipa_dma);
+ipa_main.c:	ret = ipa_dma->ops->init(ipa_dma, pdev, ipa->version, data->endpoint_count,
+ipa_main.c:	ipa_dma->ops->exit(ipa_dma);
+ipa_main.c:	ipa_dma->ops->exit(&ipa->ipa_dma);
