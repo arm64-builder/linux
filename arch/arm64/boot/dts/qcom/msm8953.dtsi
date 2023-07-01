@@ -43,15 +43,13 @@
 		CPU0: cpu@0 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53";
-			cpu-idle-states = <&CPU_PC>,
-					  <&CLUSTER_RET>,
-					  <&CLUSTER_GDHS>,
-					  <&CLUSTER_PC>;
 			reg = <0x0>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			power-domains = <&CPU_PD0>;
+			power-domain-names = "psci";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 		};
@@ -59,15 +57,13 @@
 		CPU1: cpu@1 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53";
-			cpu-idle-states = <&CPU_PC>,
-					  <&CLUSTER_RET>,
-					  <&CLUSTER_GDHS>,
-					  <&CLUSTER_PC>;
 			reg = <0x1>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			power-domains = <&CPU_PD1>;
+			power-domain-names = "psci";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 		};
@@ -75,15 +71,13 @@
 		CPU2: cpu@2 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53";
-			cpu-idle-states = <&CPU_PC>,
-					  <&CLUSTER_RET>,
-					  <&CLUSTER_GDHS>,
-					  <&CLUSTER_PC>;
 			reg = <0x2>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			power-domains = <&CPU_PD2>;
+			power-domain-names = "psci";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 		};
@@ -91,15 +85,13 @@
 		CPU3: cpu@3 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53";
-			cpu-idle-states = <&CPU_PC>,
-					  <&CLUSTER_RET>,
-					  <&CLUSTER_GDHS>,
-					  <&CLUSTER_PC>;
 			reg = <0x3>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU0_CLK>;
 			clock-names = "cpu";
+			power-domains = <&CPU_PD3>;
+			power-domain-names = "psci";
 			next-level-cache = <&L2_0>;
 			#cooling-cells = <2>;
 		};
@@ -107,15 +99,13 @@
 		CPU4: cpu@100 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53";
-			cpu-idle-states = <&CPU_PC>,
-					  <&CLUSTER_RET>,
-					  <&CLUSTER_GDHS>,
-					  <&CLUSTER_PC>;
 			reg = <0x100>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			power-domains = <&CPU_PD4>;
+			power-domain-names = "psci";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 		};
@@ -123,15 +113,13 @@
 		CPU5: cpu@101 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53";
-			cpu-idle-states = <&CPU_PC>,
-					  <&CLUSTER_RET>,
-					  <&CLUSTER_GDHS>,
-					  <&CLUSTER_PC>;
 			reg = <0x101>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			power-domains = <&CPU_PD5>;
+			power-domain-names = "psci";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 		};
@@ -139,15 +127,13 @@
 		CPU6: cpu@102 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53";
-			cpu-idle-states = <&CPU_PC>,
-					  <&CLUSTER_RET>,
-					  <&CLUSTER_GDHS>,
-					  <&CLUSTER_PC>;
 			reg = <0x102>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			power-domains = <&CPU_PD6>;
+			power-domain-names = "psci";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 		};
@@ -155,15 +141,13 @@
 		CPU7: cpu@103 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53";
-			cpu-idle-states = <&CPU_PC>,
-					  <&CLUSTER_RET>,
-					  <&CLUSTER_GDHS>,
-					  <&CLUSTER_PC>;
 			reg = <0x103>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
 			clocks = <&apcc APCC_CPU4_CLK>;
 			clock-names = "cpu";
+			power-domains = <&CPU_PD7>;
+			power-domain-names = "psci";
 			next-level-cache = <&L2_1>;
 			#cooling-cells = <2>;
 		};
@@ -212,9 +196,11 @@
 				min-residency-us = <400>;
 				local-timer-stop;
 			};
+		};
 
+		cluster-idle-states {
 			CLUSTER_RET: cluster-retention {
-				compatible = "qcom,idle-state";
+				compatible = "domain-idle-state";
 				idle-state-name = "cluster-ret";
 				arm,psci-suspend-param = <0x41000033>;
 				entry-latency-us = <120>;
@@ -224,7 +210,7 @@
 			};
 
 			CLUSTER_GDHS: cluster-gdhs {
-				compatible = "qcom,idle-state";
+				compatible = "domain-idle-state";
 				idle-state-name = "cluster-gdhs";
 				arm,psci-suspend-param = <0x41000043>;
 				entry-latency-us = <150>;
@@ -234,7 +220,7 @@
 			};
 
 			CLUSTER_PC: cluster-power-collapse {
-				compatible = "qcom,idle-state";
+				compatible = "domain-idle-state";
 				idle-state-name = "cluster-pc";
 				arm,psci-suspend-param = <0x41000053>;
 				entry-latency-us = <270>;
@@ -283,6 +269,64 @@
 		compatible = "arm,psci-1.0";
 		method = "smc";
 		force-psci-domains;
+
+		CPU_PD0: power-domain-cpu0 {
+			#power-domain-cells = <0>;
+			domain-idle-states = <&CPU_PC>;
+			power-domains = <&CLUSTER0_PD>;
+		};
+
+		CPU_PD1: power-domain-cpu1 {
+			#power-domain-cells = <0>;
+			domain-idle-states = <&CPU_PC>;
+			power-domains = <&CLUSTER0_PD>;
+		};
+
+		CPU_PD2: power-domain-cpu2 {
+			#power-domain-cells = <0>;
+			domain-idle-states = <&CPU_PC>;
+			power-domains = <&CLUSTER0_PD>;
+		};
+
+		CPU_PD3: power-domain-cpu3 {
+			#power-domain-cells = <0>;
+			domain-idle-states = <&CPU_PC>;
+			power-domains = <&CLUSTER0_PD>;
+		};
+
+		CPU_PD4: power-domain-cpu4 {
+			#power-domain-cells = <0>;
+			domain-idle-states = <&CPU_PC>;
+			power-domains = <&CLUSTER1_PD>;
+		};
+
+		CPU_PD5: power-domain-cpu5 {
+			#power-domain-cells = <0>;
+			domain-idle-states = <&CPU_PC>;
+			power-domains = <&CLUSTER1_PD>;
+		};
+
+		CPU_PD6: power-domain-cpu6 {
+			#power-domain-cells = <0>;
+			domain-idle-states = <&CPU_PC>;
+			power-domains = <&CLUSTER1_PD>;
+		};
+
+		CPU_PD7: power-domain-cpu7 {
+			#power-domain-cells = <0>;
+			domain-idle-states = <&CPU_PC>;
+			power-domains = <&CLUSTER1_PD>;
+		};
+
+		CLUSTER0_PD: power-domain-cluster0 {
+			#power-domain-cells = <0>;
+			domain-idle-states = <&CLUSTER_RET>, <&CLUSTER_GDHS>, <&CLUSTER_PC>;
+		};
+
+		CLUSTER1_PD: power-domain-cluster1 {
+			#power-domain-cells = <0>;
+			domain-idle-states = <&CLUSTER_RET>, <&CLUSTER_GDHS>, <&CLUSTER_PC>;
+		};
 	};
 
 	reserved-memory {
