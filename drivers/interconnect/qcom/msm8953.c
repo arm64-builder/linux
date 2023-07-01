@@ -1357,7 +1357,7 @@ static int msm8953_cci_get_bw(struct icc_node *node, u32 *avg, u32 *peak)
 static void msm8953_del_provider(void *data)
 {
 	icc_nodes_remove(data);
-	icc_provider_del(data);
+	icc_provider_deregister(data);
 }
 
 static struct {
@@ -1429,13 +1429,13 @@ static int msm8953_cci_probe(struct platform_device *pdev)
 	provider->xlate = of_icc_xlate_onecell;
 	provider->data = data = &cci->data;
 
-	ret = icc_provider_add(provider);
+	ret = icc_provider_register(provider);
 	if (ret)
 		return dev_err_probe(dev, ret, "failed to add icc provider\n");
 
 	ret = devm_add_action_or_reset(dev, msm8953_del_provider, provider);
 	if (ret) {
-		icc_provider_del(provider);
+		icc_provider_deregister(provider);
 		return ret;
 	}
 
