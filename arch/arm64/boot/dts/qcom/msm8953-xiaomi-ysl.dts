@@ -111,7 +111,7 @@
 	status = "okay";
 };
 
-&iris {
+&wcnss_iris {
 	/* Device has a WCN3615 */
 	compatible = "qcom,wcn3620";
 };
