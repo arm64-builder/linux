@@ -108,7 +108,6 @@ int bam_channel_init(struct ipa_dma *ipa_dma, u32 count,
 		if (!data[i].channel_name || data[i].ee_id == IPA_EE_MODEM)
 			continue;
 
-		dev_err(ipa_dma->dev, "initializing BAM channel %d, name %s\n", i, data[i].channel_name);
 		ret = bam_channel_init_one(ipa_dma, &data[i], command);
 		if (ret)
 			goto err_unwind;

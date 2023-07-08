@@ -548,8 +548,8 @@ static int ipa_smem_init(struct ipa *ipa, u32 item, size_t size)
 
 static void ipa_smem_exit(struct ipa *ipa)
 {
-	struct device *dev = &ipa->pdev->dev;
-	struct iommu_domain *domain;
+	// struct device *dev = &ipa->pdev->dev;
+	// struct iommu_domain *domain;
 
 	/* NOOP */
 }
