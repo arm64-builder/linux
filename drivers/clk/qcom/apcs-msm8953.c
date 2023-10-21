@@ -49,7 +49,7 @@ static const u8 apcs_common_cpu_pll_regs[PLL_OFF_MAX_REGS] = {
 };
 
 static const struct alpha_pll_config apcs_common_cpu_pll_config = {
-	.l = 39,
+	.l			= 39,
 	.config_ctl_val		= 0x200d4828,
 	.config_ctl_hi_val	= 0x6,
 	.test_ctl_val		= 0x1c000000,
@@ -58,8 +58,13 @@ static const struct alpha_pll_config apcs_common_cpu_pll_config = {
 	.early_output_mask	= BIT(3),
 };
 
+#define USER_CTL_U_LATCH_IFACE_MASK	BIT(11)
+#define USER_CTL_U_CAL_L_MASK		GENMASK(31, 16)
+
 static const struct alpha_pll_config apcs_sdm632_cci_pll_config = {
-	.l = 48,
+	.l			= 39,
+	.vco_mask		= GENMASK(21, 20),
+	.vco_val		= 2 << 20,
 	.config_ctl_val		= 0x4001055b,
 	.early_output_mask	= BIT(3),
 };
@@ -128,6 +133,11 @@ static int apcs_register_pll(struct device *dev, int id, struct clk_hw **hws)
 	apll->clkr.regmap = rmap;
 
 	clk_alpha_pll_configure(apll, rmap, pll_config);
+
+	if (id == APCS_CCI_PLL)
+		regmap_update_bits(rmap, apll->regs[PLL_OFF_USER_CTL_U],
+				   USER_CTL_U_CAL_L_MASK | USER_CTL_U_LATCH_IFACE_MASK,
+				   FIELD_PREP(USER_CTL_U_CAL_L_MASK, pll_config->l));
 
 	hws[id] = &apll->clkr.hw;
 	if (!apcs_is_sdm632)
