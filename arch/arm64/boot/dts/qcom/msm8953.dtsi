@@ -2819,8 +2819,13 @@
 					   "speed_bin";
 
 			reg = <0xb018000 0x4000>,
-			      <0xb111200 0x100>;
-			reg-names = "cpr", "apm";
+			      <0xb111200 0x100>,
+			      <0xb1d1360 0x14>,
+			      <0x19461d4 0x8>;
+			reg-names = "cpr",
+				    "apm",
+				    "apcs-acc",
+				    "mem-acc";
 
 			operating-points-v2 = <&cpr_opp>;
 
