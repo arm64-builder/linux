@@ -2437,6 +2437,18 @@ void clk_stromer_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
 }
 EXPORT_SYMBOL_GPL(clk_stromer_pll_configure);
 
+static int __maybe_unused clk_alpha_pll_stromer_determine_rate(struct clk_hw *hw,
+						struct clk_rate_request *req)
+{
+	u32 l;
+	u64 a;
+
+	req->rate = alpha_pll_round_rate(req->rate, req->best_parent_rate,
+					 &l, &a, ALPHA_REG_BITWIDTH);
+
+	return 0;
+}
+
 static int clk_alpha_pll_stromer_set_rate(struct clk_hw *hw, unsigned long rate,
 					  unsigned long prate)
 {
