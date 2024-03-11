@@ -2,6 +2,7 @@
 
 #include <linux/clk.h>
 #include <linux/interconnect-provider.h>
+#include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
@@ -1317,7 +1318,7 @@ static const struct of_device_id msm8953_noc_of_match[] = {
 
 static struct platform_driver msm8953_noc_driver = {
 	.probe = qnoc_probe,
-	.remove = qnoc_remove,
+	.remove_new = qnoc_remove,
 	.driver = {
 		.name = "qnoc-msm8953",
 		.of_match_table = msm8953_noc_of_match,
