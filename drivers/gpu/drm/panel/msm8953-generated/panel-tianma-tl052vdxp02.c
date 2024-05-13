@@ -194,7 +194,6 @@ static int tianma_520_v0_probe(struct mipi_dsi_device *dsi)
 
 	drm_panel_init(&ctx->panel, dev, &tianma_520_v0_panel_funcs,
 		       DRM_MODE_CONNECTOR_DSI);
-	ctx->panel.prepare_prev_first = true;
 
 	ret = drm_panel_of_backlight(&ctx->panel);
 	if (ret)
