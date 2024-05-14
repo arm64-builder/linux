@@ -129,7 +129,7 @@ dsi_mgr_phy_enable(int id,
 	struct msm_dsi *msm_dsi = dsi_mgr_get_dsi(id);
 	struct msm_dsi *mdsi = dsi_mgr_get_dsi(DSI_CLOCK_MASTER);
 	struct msm_dsi *sdsi = dsi_mgr_get_dsi(DSI_CLOCK_SLAVE);
-	int ret;
+	int ret = 0;
 
 	if (IS_BONDED_DSI() && mdsi && sdsi)
 		msm_dsi = mdsi;
@@ -153,13 +153,13 @@ dsi_mgr_phy_enable(int id,
 
 	ret = enable_phy(msm_dsi, &shared_timings[DSI_CLOCK_MASTER]);
 	if (ret)
-		return ret;
+		goto out_unlock;
 
 	if (sdsi)  {
 		ret = enable_phy(sdsi, &shared_timings[DSI_CLOCK_SLAVE]);
 		if (ret) {
 			msm_dsi_phy_disable(msm_dsi->phy);
-			return ret;
+			goto out_unlock;
 		}
 	}
 
@@ -168,7 +168,7 @@ dsi_mgr_phy_enable(int id,
 out_unlock:
 	mutex_unlock(&msm_dsi->phy_lock);
 
-	return 0;
+	return ret;
 }
 
 static void dsi_mgr_phy_disable(int id)
