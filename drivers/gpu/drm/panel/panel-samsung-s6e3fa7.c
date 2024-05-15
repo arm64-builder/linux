@@ -1152,22 +1152,15 @@ static int s6e3fa7_prepare(struct drm_panel *panel)
 	s6e3fa7_update_status(drv->panel.backlight);
 
 	usleep_range(10000, 11000);
-	return 0;
-}
-
-static int s6e3fa7_enable(struct drm_panel *panel)
-{
-	struct s6e3fa7_drv *drv = to_s6e3fa7_drv(panel);
-	int ret;
 
 	ret = mipi_dsi_dcs_set_display_on(drv->dsi);
 	if (ret < 0)
 		dev_err(drv->dev, "Failed to set display on: %d\n", ret);
 
-	return ret;
+	return 0;
 }
 
-static int s6e3fa7_disable(struct drm_panel *panel)
+static int s6e3fa7_unprepare(struct drm_panel *panel)
 {
 	struct s6e3fa7_drv *drv = to_s6e3fa7_drv(panel);
 	int ret;
@@ -1183,14 +1176,6 @@ static int s6e3fa7_disable(struct drm_panel *panel)
 		dev_err(drv->dev, "Failed to enter sleep mode: %d\n", ret);
 
 	msleep(120);
-
-	return 0;
-}
-
-static int s6e3fa7_unprepare(struct drm_panel *panel)
-{
-	struct s6e3fa7_drv *drv = to_s6e3fa7_drv(panel);
-	int ret;
 
 	gpiod_set_value_cansleep(drv->reset, 1);
 
@@ -1231,8 +1216,6 @@ static int s6e3fa7_get_modes(struct drm_panel *panel,
 
 static const struct drm_panel_funcs s6e3fa7_panel_funcs = {
 	.prepare = s6e3fa7_prepare,
-	.enable = s6e3fa7_enable,
-	.disable = s6e3fa7_disable,
 	.unprepare = s6e3fa7_unprepare,
 	.get_modes = s6e3fa7_get_modes
 };
