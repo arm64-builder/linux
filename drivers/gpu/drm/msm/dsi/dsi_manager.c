@@ -185,6 +185,9 @@ static void dsi_mgr_phy_disable(int id)
 	mutex_lock(&msm_dsi->phy_lock);
 
 	if (msm_dsi->phy_enabled) {
+		/* Save PHY status if it is a clock source */
+		msm_dsi_phy_pll_save_state(msm_dsi->phy);
+
 		/*
 		 * In bonded dsi configuration, the phy should be disabled
 		 * for the main controller only when the second controller
@@ -364,10 +367,6 @@ static void dsi_mgr_bridge_post_disable(struct drm_bridge *bridge)
 		if (ret)
 			pr_err("%s: host1 disable failed, %d\n", __func__, ret);
 	}
-
-	/* Save PHY status if it is a clock source */
-	msm_dsi_phy_pll_save_state(msm_dsi->phy);
-
 
 	pm_runtime_put_autosuspend(&msm_dsi->pdev->dev);
 	dsi_bridge->is_powered = false;

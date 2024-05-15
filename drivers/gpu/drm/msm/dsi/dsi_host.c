@@ -209,16 +209,10 @@ static const struct msm_dsi_cfg_handler *dsi_get_config(
 		goto exit;
 	}
 
-	ret = pm_runtime_resume_and_get(dev);
-	if (ret < 0) {
-		pr_err("%s: unable to resume: %d\n", __func__, ret);
-		return ERR_PTR(ret);
-	}
-
 	ret = clk_prepare_enable(ahb_clk);
 	if (ret) {
 		pr_err("%s: unable to enable ahb_clk\n", __func__);
-		goto runtime_put;
+		goto exit;
 	}
 
 	ret = dsi_get_version(msm_host->ctrl_base, &major, &minor);
@@ -233,8 +227,6 @@ static const struct msm_dsi_cfg_handler *dsi_get_config(
 
 disable_clks:
 	clk_disable_unprepare(ahb_clk);
-runtime_put:
-	pm_runtime_put_sync(dev);
 exit:
 	return cfg_hnd;
 }
@@ -1911,15 +1903,16 @@ int msm_dsi_host_init(struct msm_dsi *msm_dsi)
 		return PTR_ERR(msm_host->ctrl_base);
 	}
 
-	pm_runtime_enable(&pdev->dev);
-	pm_runtime_set_autosuspend_delay(&msm_host->pdev->dev, 50);
-	pm_runtime_use_autosuspend(&msm_host->pdev->dev);
-
 	msm_host->cfg_hnd = dsi_get_config(msm_host);
 	if (!msm_host->cfg_hnd) {
 		pr_err("%s: get config failed\n", __func__);
 		return -EINVAL;
 	}
+
+	pm_runtime_set_autosuspend_delay(&msm_host->pdev->dev, 50);
+	pm_runtime_use_autosuspend(&msm_host->pdev->dev);
+	pm_runtime_enable(&pdev->dev);
+
 	cfg = msm_host->cfg_hnd->cfg;
 
 	msm_host->id = dsi_host_get_id(msm_host);
@@ -2415,7 +2408,6 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
 		goto unlock_ret;
 	}
 
-	pm_runtime_get_sync(&msm_host->pdev->dev);
 	ret = cfg_hnd->ops->link_clk_set_rate(msm_host);
 	if (!ret)
 		ret = cfg_hnd->ops->link_clk_enable(msm_host);
@@ -2448,7 +2440,6 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
 
 fail_disable_clk:
 	cfg_hnd->ops->link_clk_disable(msm_host);
-	pm_runtime_put(&msm_host->pdev->dev);
 fail_disable_reg:
 	regulator_bulk_disable(msm_host->cfg_hnd->cfg->num_regulators,
 			       msm_host->supplies);
@@ -2477,7 +2468,6 @@ int msm_dsi_host_power_off(struct mipi_dsi_host *host)
 	pinctrl_pm_select_sleep_state(&msm_host->pdev->dev);
 
 	cfg_hnd->ops->link_clk_disable(msm_host);
-	pm_runtime_put(&msm_host->pdev->dev);
 
 	regulator_bulk_disable(msm_host->cfg_hnd->cfg->num_regulators,
 			       msm_host->supplies);
