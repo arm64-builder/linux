@@ -852,7 +852,7 @@
 			no-map;
 		};
 
-		gps_mem: gps@92000000 {
+		gps_mem: gps@93000000 {
 			reg = <0x0 0x93000000 0x0 0x200000>;
 			no-map;
 		};
