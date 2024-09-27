@@ -9,8 +9,6 @@
 #include <linux/of.h>
 #include <linux/regulator/consumer.h>
 
-#include <video/mipi_display.h>
-
 #include <drm/drm_mipi_dsi.h>
 #include <drm/drm_modes.h>
 #include <drm/drm_panel.h>
@@ -63,7 +61,7 @@ static int boe_520_v0_on(struct boe_520_v0 *ctx)
 	mipi_dsi_dcs_write_seq(dsi, 0x5b, 0x00);
 	mipi_dsi_dcs_write_seq(dsi, 0x5c, 0x82);
 	mipi_dsi_dcs_write_seq(dsi, 0x5d, 0x80);
-	mipi_dsi_dcs_write_seq(dsi, MIPI_DCS_SET_CABC_MIN_BRIGHTNESS, 0x02);
+	mipi_dsi_dcs_write_seq(dsi, 0x5e, 0x02);
 	mipi_dsi_dcs_write_seq(dsi, 0x5f, 0x00);
 	mipi_dsi_dcs_write_seq(dsi, 0x1b, 0x1b);
 	mipi_dsi_dcs_write_seq(dsi, 0x1c, 0xf7);
@@ -84,16 +82,10 @@ static int boe_520_v0_on(struct boe_520_v0 *ctx)
 	mipi_dsi_dcs_write_seq(dsi, 0xb5, 0x20);
 	mipi_dsi_dcs_write_seq(dsi, 0xff, 0x00);
 	mipi_dsi_dcs_write_seq(dsi, 0xfb, 0x01);
-
-	ret = mipi_dsi_dcs_set_display_brightness(dsi, 0x00cc);
-	if (ret < 0) {
-		dev_err(dev, "Failed to set display brightness: %d\n", ret);
-		return ret;
-	}
-
-	mipi_dsi_dcs_write_seq(dsi, MIPI_DCS_SET_CABC_MIN_BRIGHTNESS, 0x00);
-	mipi_dsi_dcs_write_seq(dsi, MIPI_DCS_WRITE_CONTROL_DISPLAY, 0x2c);
-	mipi_dsi_dcs_write_seq(dsi, MIPI_DCS_WRITE_POWER_SAVE, 0x01);
+	mipi_dsi_dcs_write_seq(dsi, 0x51, 0xcc);
+	mipi_dsi_dcs_write_seq(dsi, 0x5e, 0x00);
+	mipi_dsi_dcs_write_seq(dsi, 0x53, 0x2c);
+	mipi_dsi_dcs_write_seq(dsi, 0x55, 0x01);
 	mipi_dsi_dcs_write_seq(dsi, 0x34, 0x00);
 	mipi_dsi_dcs_write_seq(dsi, 0xd3, 0x06);
 	mipi_dsi_dcs_write_seq(dsi, 0xd4, 0x04);

@@ -9,8 +9,6 @@
 #include <linux/of.h>
 #include <linux/regulator/consumer.h>
 
-#include <video/mipi_display.h>
-
 #include <drm/drm_mipi_dsi.h>
 #include <drm/drm_modes.h>
 #include <drm/drm_panel.h>
@@ -51,15 +49,10 @@ static int tianma_520_v0_on(struct tianma_520_v0 *ctx)
 	}
 	msleep(120);
 
-	ret = mipi_dsi_dcs_set_display_brightness(dsi, 0x00cc);
-	if (ret < 0) {
-		dev_err(dev, "Failed to set display brightness: %d\n", ret);
-		return ret;
-	}
-
-	mipi_dsi_dcs_write_seq(dsi, MIPI_DCS_SET_CABC_MIN_BRIGHTNESS, 0x00);
-	mipi_dsi_dcs_write_seq(dsi, MIPI_DCS_WRITE_CONTROL_DISPLAY, 0x2c);
-	mipi_dsi_dcs_write_seq(dsi, MIPI_DCS_WRITE_POWER_SAVE, 0x01);
+	mipi_dsi_dcs_write_seq(dsi, 0x51, 0xcc);
+	mipi_dsi_dcs_write_seq(dsi, 0x5e, 0x00);
+	mipi_dsi_dcs_write_seq(dsi, 0x53, 0x2c);
+	mipi_dsi_dcs_write_seq(dsi, 0x55, 0x01);
 
 	ret = mipi_dsi_dcs_set_display_on(dsi);
 	if (ret < 0) {

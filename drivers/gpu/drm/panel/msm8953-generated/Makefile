@@ -1,3 +1,9 @@
+obj-$(CONFIG_DRM_PANEL_ASUS_ZE520KL_ILI7807B_BOE) += panel-asus-ze520kl-ili7807b-boe.o
+obj-$(CONFIG_DRM_PANEL_ASUS_ZE520KL_R63350_TM) += panel-asus-ze520kl-r63350-tm.o
+obj-$(CONFIG_DRM_PANEL_ASUS_ZE552KL_ILI7807B_CTC) += panel-asus-ze552kl-ili7807b-ctc.o
+obj-$(CONFIG_DRM_PANEL_ASUS_ZE552KL_NT35596_TXD) += panel-asus-ze552kl-nt35596-txd.o
+obj-$(CONFIG_DRM_PANEL_ASUS_ZE552KL_OTM1901A_LCE) += panel-asus-ze552kl-otm1901a-lce.o
+obj-$(CONFIG_DRM_PANEL_ASUS_ZE552KL_R63350_TM) += panel-asus-ze552kl-r63350-tm.o
 obj-$(CONFIG_DRM_PANEL_BOE_BS052FHM_A00_6C01) += panel-boe-bs052fhm-a00-6c01.o
 obj-$(CONFIG_DRM_PANEL_CSOT_622_V0) += panel-csot-622-v0.o
 obj-$(CONFIG_DRM_PANEL_FAIRPHONE_FP3_HX83112B) += panel-fairphone-fp3-hx83112b.o
